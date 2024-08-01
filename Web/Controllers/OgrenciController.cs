@@ -58,7 +58,7 @@ namespace Web.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> IndexPageOrder(PageOrderModel pageOrder)
         {
-            //pageOrder.OrderExpressions = new List<string>()
+            //pageOrder.OrderExpressionsForEntityProperties = new List<string>()
             //{
             //    "Adı",
             //    "Soyadı",

@@ -34,23 +34,23 @@ namespace N4CoreLite.Models
         public string OrderExpression { get; set; }
         public Dictionary<string, string> OrderExpressionDictionary { get; private set; }
 
-        private List<string> _orderExpressions;
+        private List<string> _orderExpressionsForEntityProperties;
 
         /// <summary>
         /// Must be assigned by related entity property names.
         /// Turkish characters will be replaced with relevant English characters.
         /// </summary>
-        public List<string> OrderExpressions
+        public List<string> OrderExpressionsForEntityProperties
         {
             get
             {
-                return _orderExpressions;
+                return _orderExpressionsForEntityProperties;
             }
             set
             {
-                _orderExpressions = value;
+                _orderExpressionsForEntityProperties = value;
                 OrderExpressionDictionary = new Dictionary<string, string>();
-                foreach (var orderExpression in _orderExpressions)
+                foreach (var orderExpression in _orderExpressionsForEntityProperties)
                 {
                     OrderExpressionDictionary.Add(orderExpression.ChangeTurkishCharactersToEnglish().Replace(" ", ""), orderExpression);
                     OrderExpressionDictionary.Add(orderExpression.ChangeTurkishCharactersToEnglish().Replace(" ", "") + "Desc", orderExpression + " Azalan");
@@ -68,7 +68,7 @@ namespace N4CoreLite.Models
             RecordsPerPageCount = "10";
             RecordsPerPageCounts = new List<string>() { "5", "10", "25", "50", "100", "Tümü" };
             OrderExpression = string.Empty;
-            _orderExpressions = new List<string>();
+            _orderExpressionsForEntityProperties = new List<string>();
             OrderExpressionDictionary = new Dictionary<string, string>();
         }
     }

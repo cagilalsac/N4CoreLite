@@ -64,7 +64,7 @@ namespace Business.Services.Reports
                 viewModel.SinifDictionary = sinifList.ToDictionary(s => s.Id.ToString(), s => s.Adi);
                 viewModel.DersDictionary = dersList.ToDictionary(d => d.Id.ToString(), d => d.Adi);
             }
-            viewModel.OrderExpressions = new List<string>()
+            viewModel.OrderExpressionsForEntityProperties = new List<string>()
             {
                 "Öğrenci Adı Soyadı",
                 "Öğrenci Mezuniyet",
