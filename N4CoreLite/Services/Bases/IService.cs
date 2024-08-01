@@ -7,8 +7,8 @@ namespace N4CoreLite.Services.Bases
     public interface IService<TEntity, TQueryModel, TCommandModel> : IDisposable
     {
         public void Set(params Profile[] mapperProfiles);
-        public IQueryable<TQueryModel> Query(bool noEntityTracking = true);
         public IQueryable<TQueryModel> Query(IQueryable<TEntity> entityQuery);
+        public IQueryable<TQueryModel> Query(bool noEntityTracking = true);
         public IQueryable<TCommandModel> QueryCommand();
         public Task<Response<List<TQueryModel>>> GetList(CancellationToken cancellationToken = default);
         public Task<Response<List<TQueryModel>>> GetList(PageOrderModel pageOrderModel, CancellationToken cancellationToken = default);

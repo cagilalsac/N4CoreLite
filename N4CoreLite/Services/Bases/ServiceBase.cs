@@ -29,14 +29,14 @@ namespace N4CoreLite.Services.Bases
 
         public void Set(params Profile[] mapperProfiles) => _mapper.Set(mapperProfiles);
 
-        public virtual IQueryable<TQueryModel> Query(bool noEntityTracking = true)
-        {
-            return _repo.Query(noEntityTracking).ProjectTo<TQueryModel>(_mapper.Configuration);
-        }
-
         public virtual IQueryable<TQueryModel> Query(IQueryable<TEntity> entityQuery)
         {
             return entityQuery.ProjectTo<TQueryModel>(_mapper.Configuration);
+        }
+
+        public virtual IQueryable<TQueryModel> Query(bool noEntityTracking = true)
+        {
+            return Query(_repo.Query(noEntityTracking));
         }
 
         public virtual IQueryable<TCommandModel> QueryCommand()
