@@ -1,0 +1,251 @@
+﻿@inherits Microsoft.VisualStudio.Web.CodeGeneration.Templating.RazorTemplateBase
+@{
+if (@Model.NullableEnabled)
+{
+@:#nullable disable
+
+}
+}
+@using System.Collections.Generic;
+@using System.Linq;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+using N4CoreLite.Services.Bases;
+using N4CoreLite.Controllers.Bases;
+using N4CoreLite.Models;
+using DataAccess.Entities;
+using Business.Models;
+
+//Generated from Custom Template.
+namespace @Model.ControllerNamespace
+{
+@{
+    string routePrefix;
+    if (String.IsNullOrEmpty(Model.AreaName))
+    {
+        routePrefix = Model.ControllerRootName;
+    }
+    else
+    {
+        routePrefix = Model.AreaName + "/" + Model.ControllerRootName;
+    }
+    var modelProperties = new List<string>();
+    foreach (var property in Model.ModelMetadata.Properties)
+    {
+        if (property.Scaffold)
+        {
+            modelProperties.Add(property.PropertyName);
+        }
+    }
+    var bindString = string.Join(",", modelProperties);
+    var contextTypeName = Model.ContextTypeName;
+    var entitySetName = Model.ModelMetadata.EntitySetName;
+    var entitySetVar = Model.EntitySetVariable ??
+        (String.IsNullOrEmpty(entitySetName)
+            ? entitySetName
+            : (entitySetName.Substring(0, length: 1).ToLowerInvariant() + entitySetName.Substring(1)));
+    var primaryKeyName = Model.ModelMetadata.PrimaryKeys[0].PropertyName;
+    var primaryKeyShortTypeName = Model.ModelMetadata.PrimaryKeys[0].ShortTypeName;
+    var primaryKeyType = Model.ModelMetadata.PrimaryKeys[0].TypeName;
+    var primaryKeyNullableTypeName = GetNullableTypeName(primaryKeyType, primaryKeyShortTypeName);
+    var lambdaVar = Model.ModelVariable[0];
+    var relatedProperties = new Dictionary<string, dynamic>();
+    foreach (var nav in Model.ModelMetadata.Navigations)
+    {
+        relatedProperties.Add(nav.AssociationPropertyName, nav);
+
+    }
+
+    var inlineIncludes = "";
+    foreach (var property in relatedProperties.Values)
+    {
+        inlineIncludes += string.Format("{0}                .Include({1} => {1}.{2})", Environment.NewLine, lambdaVar, property.AssociationPropertyName);
+    }
+
+    if (!string.IsNullOrEmpty(Model.AreaName))
+    {
+    @:@string.Format("[Area(\"{0}\")]", Model.AreaName)
+    }
+
+    var serviceAbstractType = "ServiceBase<" + Model.ModelTypeName + ", " + Model.ModelTypeName + "QueryModel, " + Model.ModelTypeName + "CommandModel>";
+    var serviceAbstractName = Model.ModelVariable + "Service";
+    var queryModelType = Model.ModelTypeName + "QueryModel";
+    var commandModelType = Model.ModelTypeName + "CommandModel";
+}
+    public class @Model.ControllerName : MvcControllerBase
+    {
+        // TODO: Add service injections here
+        private readonly @serviceAbstractType @("_" + serviceAbstractName);
+    @foreach (var relatedProperty in relatedProperties.Keys)
+    {
+        @:private readonly ServiceBase<@relatedProperty, @(relatedProperty + "QueryModel"), @(relatedProperty + "CommandModel")> _@(relatedProperty.Substring(0, 1).ToLower() + relatedProperty.Substring(1) + "Service");
+    }
+
+        /* Replace many to many with the service base name in the current project for using many to many relational services. */
+        //private readonly ServiceBase<Entity, QueryModel, CommandModel> _manyToManyService;
+
+        public @(Model.ControllerName + "(\n\t\t\t" + serviceAbstractType + " " + serviceAbstractName)
+        @foreach (var relatedProperty in relatedProperties.Keys)
+        {
+            @:@(", ServiceBase<" + relatedProperty + ", " + relatedProperty + "QueryModel, " + relatedProperty + "CommandModel> " + relatedProperty.Substring(0, 1).ToLower() + relatedProperty.Substring(1) + "Service")
+        }
+            //, ServiceBase<Entity, QueryModel, CommandModel> manyToManyService
+        )
+        {
+            @("_" + serviceAbstractName) = @serviceAbstractName;
+
+        @foreach (var relatedProperty in relatedProperties.Keys)
+        {
+            @:@("_" + relatedProperty.Substring(0, 1).ToLower() + relatedProperty.Substring(1) + "Service = " + relatedProperty.Substring(0, 1).ToLower() + relatedProperty.Substring(1) + "Service");
+        }
+            //_manyToManyService = manyToManyService;
+        }
+
+        protected override async Task SetViewData(string message = null, PageOrderModel pageOrder = null)
+        {
+            await base.SetViewData(message, pageOrder); // End message in service with '.' for success, '!' for danger Bootstrap CSS classes to be used in the View
+@{
+    foreach (var property in relatedProperties.Values)
+    {
+            @:ViewData["@(property.ForeignKeyPropertyNames[0])"] = new SelectList((await _@(relatedProperties.FirstOrDefault(rp => rp.Value == property).Key.Substring(0, 1).ToLower() + relatedProperties.FirstOrDefault(rp => rp.Value == property).Key.Substring(1))Service.GetList()).Data, "Id", "Adi");
+    }
+            @://ViewData["ManyToManyIds"] = new MultiSelectList((await _manyToManyService.GetList()).Data, "Id", "Adi");
+}
+        }
+
+        protected override void SetTempData(string message)
+        {
+            base.SetTempData(message); // End message in service with '.' for success, '!' for danger Bootstrap CSS classes to be used in the View
+        }
+
+        // GET: @routePrefix
+        public async Task<IActionResult> Index()
+        {
+            var response = await @("_" + serviceAbstractName).GetList();
+            await SetViewData(response.Message);
+            return View(response.Data);
+        }
+
+         // GET: @routePrefix/IndexPageOrder
+        public async Task<IActionResult> IndexPageOrder(PageOrderModel pageOrder)
+        {
+            var response = await @("_" + serviceAbstractName).GetList(pageOrder);
+            await SetViewData(response.Message, pageOrder);
+            return View("Index", response.Data);
+        }
+
+        // GET: @routePrefix/Details/5
+        public async Task<IActionResult> Details(@primaryKeyShortTypeName id)
+        {
+            var response = await @("_" + serviceAbstractName).GetItem(id);
+            await SetViewData(response.Message);
+            return View(response.Data);
+        }
+
+        // GET: @routePrefix/Create
+        public async Task<IActionResult> Create()
+        {
+            await SetViewData();
+            return View();
+        }
+
+        // POST: @routePrefix/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(@commandModelType @(Model.ModelVariable + "Command"))
+        {
+            if (ModelState.IsValid)
+            {
+@{
+    if (!string.IsNullOrEmpty(primaryKeyType) && IsGuid(primaryKeyType))
+    {
+                @:@(Model.ModelVariable).@primaryKeyName = Guid.NewGuid();
+    }
+                @:var response = await @("_" + serviceAbstractName).Create(@(Model.ModelVariable + "Command"));
+}
+                SetTempData(response.Message);
+                if (response.IsSuccessful)                 
+                    return RedirectToAction(nameof(Details), new { response.Data.Id });
+            }
+            await SetViewData();
+            return View(@(Model.ModelVariable + "Command"));
+        }
+
+        // GET: @routePrefix/Edit/5
+        public async Task<IActionResult> Edit(@primaryKeyShortTypeName id)
+        {
+            var response = await @("_" + serviceAbstractName).GetItemCommand(id);
+            await SetViewData(response.Message);
+            return View(response.Data);
+        }
+
+        // POST: @routePrefix/Edit
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(@commandModelType @(Model.ModelVariable + "Command"))
+        {
+            if (ModelState.IsValid)
+            {
+@{
+                @:var response = await @("_" + serviceAbstractName).Update(@(Model.ModelVariable + "Command"));
+}
+                SetTempData(response.Message);
+                if (response.IsSuccessful)
+                    return RedirectToAction(nameof(Details), new { response.Data.Id });
+            }
+            await SetViewData();
+            return View(@(Model.ModelVariable + "Command"));
+        }
+
+        // GET: @routePrefix/Delete/5
+        public async Task<IActionResult> Delete(@primaryKeyShortTypeName id)
+        {
+            var response = await @("_" + serviceAbstractName).GetItem(id);
+            await SetViewData(response.Message);
+            return View(response.Data);
+        }
+
+        // POST: @routePrefix/Delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(@primaryKeyShortTypeName id)
+        {
+            var response = await @("_" + serviceAbstractName).Delete(id);
+            SetTempData(response.Message);
+            return RedirectToAction(nameof(Index));
+        }
+	}
+}
+@functions
+{
+    // This function converts the primary key short type name to its nullable equivalent when possible. This is required to make
+    // sure that an HTTP 400 error is thrown when the user tries to access the edit, delete, or details action with null values.
+    string GetNullableTypeName(string typeName, string shortTypeName)
+    {
+        // The exceptions are caught because if for any reason the type is user defined, then the short type name will be used.
+        // In that case the user will receive a server error if null is passed to the edit, delete, or details actions.
+        Type primaryKeyType = null;
+        try
+        {
+            primaryKeyType = Type.GetType(typeName);
+        }
+        catch
+        {
+        }
+        if (primaryKeyType != null && (!Microsoft.VisualStudio.Web.CodeGeneration.Templating.TypeUtilities.IsNullable(primaryKeyType) || IsGuid(typeName)))
+        {
+            return shortTypeName + "?";
+        }
+        return shortTypeName;
+    }
+
+    bool IsGuid(string typeName) {
+        return String.Equals("System.Guid", typeName, StringComparison.OrdinalIgnoreCase);
+    }
+}

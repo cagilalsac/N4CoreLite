@@ -1,0 +1,17 @@
+﻿<script>
+    $(function () {
+        $(document).on("change", ".pagenumber", function () {
+            $("#form").submit();
+        });
+        $(document).on("change", ".recordsperpagecount", function () {
+            $(".pagenumber").val("1");
+            $("#form").submit();
+        });
+        $(document).on("change", ".orderexpression", function () {
+            $("#form").submit();
+        });
+        $(document).on("click", ":submit", function () {
+            $(".pagenumber").val("1");
+        });
+    });
+</script>

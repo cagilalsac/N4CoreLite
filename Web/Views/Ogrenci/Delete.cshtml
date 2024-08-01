@@ -1,0 +1,114 @@
+﻿@model OgrenciQueryModel
+@*Generated from Custom Template.*@
+@*Model namespace using directive should be added to _ViewImports.cshtml.*@
+
+@{
+    ViewData["Title"] = "Sil";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+</div>
+
+<div class="container">
+    <partial name="_Message" />
+    @if (Model is not null)
+    {
+        <h3>Bu kaydı silmek istediğinize emin misiniz?</h3>
+        <div>
+            <h4>Öğrenci</h4>
+            <hr />
+
+            <div class="row mb-3">
+                <div class="col-2">
+                    <b>@Html.DisplayNameFor(model => model.AdiSoyadi)</b>
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.AdiSoyadi)
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-2">
+                    <b>@Html.DisplayNameFor(model => model.DogumTarihi)</b>
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.DogumTarihi)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-2">
+                    <b>@Html.DisplayNameFor(model => model.MezunMu)</b>
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.MezunMu)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-2">
+                    <b>@Html.DisplayNameFor(model => model.Uyruk)</b>
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Uyruk)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-2">
+                    <b>@Html.DisplayNameFor(model => model.Cinsiyeti)</b>
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Cinsiyeti)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-2">
+                    <b>@Html.DisplayNameFor(model => model.TcKimlikNo)</b>
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.TcKimlikNo)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-2">
+                    <b>@Html.DisplayNameFor(model => model.NotOrtalamasi)</b>
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.NotOrtalamasi)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-2">
+                    <b>@Html.DisplayNameFor(model => model.Sinif)</b>
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Sinif)
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-2">
+                    <b>@Html.DisplayNameFor(model => model.Dersleri)</b>
+                </div>
+                <div class="col-10">
+                    @if (!string.IsNullOrWhiteSpace(Model.Dersleri))
+                    {
+                        <div style="overflow-y:auto;border-style:solid;border-width:1px;padding-left:7px;height:100px;">
+                            @Html.Raw(Model.Dersleri)
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+            <form asp-action="Delete">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Evet" class="btn btn-danger" />&nbsp;&nbsp;
+                <a asp-action="Index" class="btn btn-success">Hayır</a>
+            </form>
+        </div>
+    }
+</div>
+
+
+

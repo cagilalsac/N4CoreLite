@@ -1,0 +1,29 @@
+﻿@model PageOrderModel
+
+@{
+    var recordsPerPageCounts = new SelectList(Model.RecordsPerPageCounts);
+    var pageNumbers = new SelectList(Model.PageNumbers);
+    var orderExpressions = new SelectList(Model.OrderExpressionDictionary, "Key", "Value");
+}
+
+<div class="col-2">
+@if (orderExpressions.Any())
+{
+    <select asp-for="OrderExpression" class="form-select orderexpression" asp-items="orderExpressions">
+        <option value="" disabled>Sıra</option>
+    </select>
+}
+</div>
+<div class="col-2">
+    <select asp-for="RecordsPerPageCount" class="form-select recordsperpagecount" asp-items="recordsPerPageCounts">
+        <option value="" disabled>Kayıt Sayısı</option>
+    </select>
+</div>
+<div class="col-2">
+    <div class="input-group">
+        <select asp-for="PageNumber" class="form-select pagenumber" asp-items="pageNumbers">
+            <option value="" disabled>Sayfa</option>
+        </select>
+        <span class="input-group-text">@(" / " + pageNumbers.Count())</span>
+    </div>
+</div>

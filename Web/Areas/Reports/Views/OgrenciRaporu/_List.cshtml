@@ -1,0 +1,85 @@
+﻿@using Business.Models.Reports
+@using N4CoreLite.Models
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model OgrenciRaporuViewModel
+
+<div id="list">
+    <div class="row mb-3">
+        <div class="col-6">
+            <partial name="_Message" model="Model.Message" />
+        </div>
+        <partial name="_PageOrder" model="(Model as PageOrderModel)" />
+    </div>
+    @if (Model is not null && Model.List is not null && Model.List.Any())
+    {
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.List.FirstOrDefault().Sinif)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.List.FirstOrDefault().OgrenciAdiSoyadi)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.List.FirstOrDefault().OgrenciDogumTarihi)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.List.FirstOrDefault().OgrenciMezunMu)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.List.FirstOrDefault().OgrenciUyruk)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.List.FirstOrDefault().OgrenciCinsiyeti)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.List.FirstOrDefault().OgrenciTcKimlikNo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.List.FirstOrDefault().Ders)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.List.FirstOrDefault().DersOrtalamasi)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.List)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sinif)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OgrenciAdiSoyadi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OgrenciDogumTarihi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OgrenciMezunMu)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OgrenciUyruk)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OgrenciCinsiyeti)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OgrenciTcKimlikNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ders)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DersOrtalamasi)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

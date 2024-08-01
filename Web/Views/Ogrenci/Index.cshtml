@@ -1,0 +1,99 @@
+﻿@model IEnumerable<OgrenciQueryModel>
+@*Generated from Custom Template.*@
+@*Model namespace using directive should be added to _ViewImports.cshtml.*@
+
+@{
+    ViewData["Title"] = "Liste";
+}
+
+<div class="container-fluid">
+    <h1>@ViewData["Title"]</h1>
+</div>
+
+<div class="container-fluid">
+@{
+    var action = ViewBag.PageOrder is null ? "Index" : "IndexPageOrder";
+}
+<form asp-action="@action" id="form" autocomplete="off">
+    <div class="row mb-3">
+        <div class="col-5">
+            <partial name="_Message" />
+        </div>
+    @{
+        if (ViewBag.PageOrder is not null)
+        {
+            <partial name="_PageOrder" model="ViewBag.PageOrder" />
+        }
+        else
+        {
+            <div class="col-6"></div>  
+        }
+    }
+        <div class="col-1 text-end">
+            <a asp-action="Create">Yeni</a>
+        </div>
+    </div>
+    @if (Model is not null && Model.Any())
+    {
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdiSoyadi)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MezunMu)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DogumTarihi)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Uyruk)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TcKimlikNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sinif)
+                </th>
+                <th class="w-25"></th>
+            </tr>
+        </thead>
+        <tbody>
+	    @foreach (var item in Model) {
+	        <tr>
+                <td>
+					@Html.DisplayFor(modelItem => item.AdiSoyadi)
+				</td>
+                <td>
+					@Html.DisplayFor(modelItem => item.MezunMu)
+				</td>
+                <td>
+					@Html.DisplayFor(modelItem => item.DogumTarihi)
+				</td>
+                <td>
+					@Html.DisplayFor(modelItem => item.Uyruk)
+				</td>
+                <td>
+					@Html.DisplayFor(modelItem => item.TcKimlikNo)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Sinif)
+				</td>
+		        <td class="text-end">
+			        <a asp-action="Details" asp-route-id="@item.Id">Detay</a>&nbsp;|&nbsp;
+			        <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>&nbsp;|&nbsp;
+			        <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
+		        </td>
+	        </tr>
+	    }
+        </tbody>
+    </table>
+    }
+</form>
+</div>
+
+@section Scripts {
+    <partial name="_PageOrderScripts" />
+}
+

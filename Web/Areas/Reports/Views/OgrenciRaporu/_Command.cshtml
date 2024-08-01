@@ -1,0 +1,75 @@
+﻿@using Business.Enums
+@using Business.Models.Reports
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model OgrenciRaporuViewModel
+
+@{
+    var mezunSelectList = new SelectList(Model.MezunDictionary, "Key", "Value");
+    var sinifSelectList = new SelectList(Model.SinifDictionary, "Key", "Value");
+    var dersMultiSelectList = new MultiSelectList(Model.DersDictionary, "Key", "Value");
+}
+
+<div class="row mb-3">
+    <div class="col-2">
+        <label asp-for="Command.OgrenciAdiSoyadi"></label>
+    </div>
+    <div class="col-4">
+        <input asp-for="Command.OgrenciAdiSoyadi" class="form-control" placeholder="Tümü için boş bırakınız" />
+    </div>
+    <div class="col-2">
+        <label asp-for="Command.OgrenciMezunMu"></label>
+    </div>
+    <div class="col-4">
+        <select asp-for="Command.OgrenciMezunMu" class="form-select" asp-items="mezunSelectList">
+            <option value="">-- Tümü --</option>
+        </select>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-2">
+        <label asp-for="Command.OgrenciDogumTarihiBaslangic"></label>
+    </div>
+    <div class="col-4">
+        <div class="input-group">
+            <input asp-for="Command.OgrenciDogumTarihiBaslangic" class="form-control datepicker" placeholder="Tümü için boş bırakınız" type="text" />
+            <span class="input-group-text">-</span>
+            <input asp-for="Command.OgrenciDogumTarihiBitis" class="form-control datepicker" placeholder="Tümü için boş bırakınız" type="text" />
+        </div>
+    </div>
+    <div class="col-2">
+        <label asp-for="Command.OgrenciUyruk"></label>
+    </div>
+    <div class="col-4">
+        <select asp-for="Command.OgrenciUyruk" class="form-select">
+            <option value="">-- Tümü --</option>
+            <option value="@((int)Uyruklar.TC)">@Uyruklar.TC</option>
+            <option value="@((int)Uyruklar.Yabancı)">@Uyruklar.Yabancı</option>
+        </select>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-2">
+        <label asp-for="Command.SinifId"></label>
+    </div>
+    <div class="col-4">
+        <select asp-for="Command.SinifId" class="form-select select2" asp-items="sinifSelectList">
+            <option value="">-- Tümü --</option>
+        </select>
+    </div>
+    <div class="col-2">
+        <label asp-for="Command.DersIdleri"></label>
+    </div>
+    <div class="col-4">
+        <select multiple asp-for="Command.DersIdleri" class="form-select select2" asp-items="dersMultiSelectList">
+        </select>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="offset-2 col-10">
+        <button type="submit" class="btn btn-success"><i class="bi bi-search"></i> Filtrele</button>
+        &nbsp;&nbsp;
+        <a asp-action="Index" class="btn btn-warning"><i class="bi bi-arrow-clockwise"></i> Temizle</a>
+    </div>
+</div>

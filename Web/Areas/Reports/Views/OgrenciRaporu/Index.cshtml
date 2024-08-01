@@ -1,0 +1,37 @@
+﻿@using Business.Models.Reports
+@using N4CoreLite.Models
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model OgrenciRaporuViewModel
+@*Generated from Custom Template.*@
+@*Model namespace using directive should be added to _ViewImports.cshtml.*@
+
+@{
+    ViewData["Title"] = "Rapor";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <h1>@ViewData["Title"]</h1>
+</div>
+<hr />
+<div class="container-fluid">
+@{
+    var action = "Index";
+}
+<form asp-action="@action" id="form" autocomplete="off" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#list">
+    <partial name="_Command" model="Model" />
+    <hr />
+    <partial name="_List" model="Model" />
+</form>
+</div>
+
+@section Scripts {
+    <partial name="_PageOrderScripts" />
+    <partial name="_Ajax" />
+    <partial name="_Select2" />
+    <partial name="_DateTimePicker" />
+}
+
+

@@ -1,0 +1,116 @@
+﻿@model OgrenciCommandModel
+@*Generated from Custom Template.*@
+@*Model namespace using directive should be added to _ViewImports.cshtml.*@
+
+@{
+    ViewData["Title"] = "Yeni";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+</div>
+
+<div class="container">
+    <partial name="_Message" />
+    <h4>Öğrenci</h4>
+    <hr />
+    <div class="row">
+        <div class="col-12">
+            <form asp-action="Create" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row mb-3">
+                    <label asp-for="SinifId" class="col-2 col-form-label fw-bold"></label>
+                    <div class="col-10">
+                        <select asp-for="SinifId" class="form-select select2" asp-items="ViewBag.SinifId">
+                            <option value="">-- Seçiniz --</option>
+                        </select>
+                        <span asp-validation-for="SinifId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label asp-for="Adi" class="col-2 col-form-label fw-bold"></label>
+                    <div class="col-10">
+                        <input asp-for="Adi" class="form-control" />
+                        <span asp-validation-for="Adi" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label asp-for="Soyadi" class="col-2 col-form-label fw-bold"></label>
+                    <div class="col-10">
+                        <input asp-for="Soyadi" class="form-control" />
+                        <span asp-validation-for="Soyadi" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label asp-for="DogumTarihi" class="col-2 col-form-label fw-bold"></label>
+                    <div class="col-10">
+                        <input asp-for="DogumTarihi" class="form-control datepicker" type="text" />
+                        <span asp-validation-for="DogumTarihi" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label asp-for="MezunMu" class="col-2 col-form-label fw-bold"></label>
+                    <div class="col-10" style="padding-top: 7px;">
+                        <input class="form-check-input" asp-for="MezunMu" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label asp-for="Uyruk" class="col-2 col-form-label fw-bold"></label>
+                    <div class="col-10">
+                        <select asp-for="Uyruk" class="form-select">
+                            <option value="@((int)Uyruklar.TC)">@Uyruklar.TC</option>
+                            <option value="@((int)Uyruklar.Yabancı)">@Uyruklar.Yabancı</option>
+                        </select>
+                        <span asp-validation-for="Uyruk" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label asp-for="Cinsiyeti" class="col-2 col-form-label fw-bold"></label>
+                    <div class="col-10">
+                        <select asp-for="Cinsiyeti" class="form-select">
+                            <option value="@((int)Cinsiyetler.Kadın)">@Cinsiyetler.Kadın</option>
+                            <option value="@((int)Cinsiyetler.Erkek)">@Cinsiyetler.Erkek</option>
+                        </select>
+                        <span asp-validation-for="Cinsiyeti" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label asp-for="TcKimlikNo" class="col-2 col-form-label fw-bold"></label>
+                    <div class="col-10">
+                        <input asp-for="TcKimlikNo" class="form-control" />
+                        <span asp-validation-for="TcKimlikNo" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label asp-for="DersIdleri" class="col-2 col-form-label fw-bold"></label>
+                    <div class="col-10">
+                        <select multiple asp-for="DersIdleri" class="form-select select2" asp-items="ViewBag.DersIdleri"></select>
+                        <span asp-validation-for="DersIdleri" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="offset-2 col-6">
+                        <input type="submit" value="Kaydet" class="btn btn-primary" />
+                        &nbsp;&nbsp;
+                        <button type="reset" class="btn btn-outline-primary">Temizle</button>
+                        &nbsp;&nbsp;
+                        <a asp-action="Index">Listeye Dön</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_Select2" />
+    <partial name="_DateTimePicker" />
+}
+
+
+

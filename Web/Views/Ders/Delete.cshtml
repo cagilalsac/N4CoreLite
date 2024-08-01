@@ -1,0 +1,57 @@
+﻿@model DersQueryModel
+@*Generated from Custom Template.*@
+@*Model namespace using directive should be added to _ViewImports.cshtml.*@
+
+@{
+    ViewData["Title"] = "Sil";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+</div>
+
+<div class="container">
+    <partial name="_Message" />
+    @if (Model is not null)
+    {
+    <h3>Bu kaydı silmek istediğinize emin misiniz?</h3>
+    <div>
+        <h4>Ders</h4>
+        <hr />
+            
+        <div class="row mb-3">
+            <div class="col-2">
+                <b>@Html.DisplayNameFor(model => model.Adi)</b>
+            </div>
+            <div class="col-10">
+                @Html.DisplayFor(model => model.Adi)
+            </div>
+        </div>
+        @*
+        <div class="row mb-3">
+            <div class="col-2">
+                <b>@Html.DisplayNameFor(model => model.ManyToManyProperty)</b>
+            </div>
+            <div class="col-10">
+                @if (!string.IsNullOrWhiteSpace(Model.ManyToManyProperty))
+                {
+                <div style="overflow-y:auto;border-style:solid;border-width:1px;padding-left:7px;height:100px;">
+                    @Html.Raw(Model.ManyToManyProperty)
+                </div>
+                }
+            </div>
+        </div>
+        *@
+        
+        <form asp-action="Delete">
+	    @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Evet" class="btn btn-danger" />&nbsp;&nbsp;
+            <a asp-action="Index" class="btn btn-success">Hayır</a>
+        </form>
+    </div>
+    }
+</div>
+
+
+

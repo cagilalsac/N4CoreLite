@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "Hakkında";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <p>&copy; @DateTime.Now.Year - @((appSettingsBase as AppSettings).Title)</p>
+</div>
